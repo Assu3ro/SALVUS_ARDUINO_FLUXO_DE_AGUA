@@ -5,31 +5,45 @@ Este projeto apresenta uma solução completa para monitorar um vazão de água 
 
 ➤ Principais Funcionalidades
 💧 Monitoramento em Tempo Real: Visualiza a vazão instantânea (Litros/minuto) em um cartão e em um gráfico de linha.
+
 📊 Cálculo de Volume Acumulado: O Arduino integra um vazão ao longo do tempo para calcular o volume total de água que passou pelo sensor.
+
 🔘 Reset Físico: Um botão físico conectado ao Arduino permite zerar o contador de volume acumulado a qualquer momento.
+
 💻 Dashboard Web Interativo: Uma página web, usando uma API Web Serial, conecta-se diretamente ao Arduino para exibir os dados sem a necessidade de um complexo backend.
+
 ⚙️ Comunicação Robusta: A comunicação entre o Arduino e a interface é feita através de um protocolo JSON bem definido, garantindo a integridade dos dados.
+
 🛠️ Como Funciona (Arquitetura)
 O sistema opera em um fluxo de dados unidirecional e simples:
 
+
+
 Sensor (YF-S201): Gera pulsos elétricos fornecidos ao fluxo de água.
+
 Arduino Uno:
-Captura estes pulsos usando uma interrupção de hardware para máxima precisão.
-Calcula a vazão instantânea (L/min) a partir da frequência dos pulsos.
-Integre um vazão a cada segundo para obter o volume total acumulado.
-Verifique continuamente se o botão de reset foi pressionado.
-Envia os dados de vazão e volume em formato JSON pela porta serial a cada segundo.
+-Captura estes pulsos usando uma interrupção de hardware para máxima precisão.
+-Calcula a vazão instantânea (L/min) a partir da frequência dos pulsos.
+-Integre um vazão a cada segundo para obter o volume total acumulado.
+-Verifique continuamente se o botão de reset foi pressionado.
+-Envia os dados de vazão e volume em formato JSON pela porta serial a cada segundo.
+
 Interface Web (Navegador):
-Utilize uma API Web Serial para se conectar à porta serial do Arduino.
-Lê as strings JSON enviadas pelo Arduino.
-Faz o "parse" do JSON e atualiza os elementos da UI (cards, gráficos e tabela) com os novos dados.
+-Utilize uma API Web Serial para se conectar à porta serial do Arduino.
+-Lê as strings JSON enviadas pelo Arduino.
+-Faz o "parse" do JSON e atualiza os elementos da UI (cards, gráficos e tabela) com os novos dados.
+
+
 🔩 Hardware Necessário
-Componente	Quantidade	Descrição
-Arduino Uno (ou similar)	1	O cérebro do projeto.
-Sensor de Fluxo YF-S201	1	Mede o fluxo de água.
-Botão de pressão (Botão)	1	Para zerar o contador de volume.
-Placa de ensaio (Protoboard)	1	Para facilitar as conexões.
-Jumpers (Fios)	Vários	Para conectar os componentes.
+Componentes
+Arduino Uno (ou similar)	O cérebro do projeto.
+Sensor de Fluxo YF-S201	Mede o fluxo de água.
+Botão de pressão (Botão)	Para zerar o contador de volume.
+Placa de ensaio (Protoboard)	Para facilitar as conexões.
+Jumpers (Fios)	Para conectar os componentes.
+
+
+
 🔌 Montagem do Circuito
 Conecte os componentes conforme o diagrama e a tabela abaixo.
 
@@ -50,6 +64,8 @@ Fio Preto (Sensor)	Sensor YF-S201 (GND)	GND
 Fio Amarelo (Sensor)	Sensor YF-S201 (Sinal)	Pino Digital 2
 Terminal 1 (Botão)	Botão	GND
 Terminal 2 (Botão)	Botão	Pino Digital 4
+
+
 🚀 Configuração e Uso
 1. Preparar o Arduino
 Instale um Arduino IDE: Se ainda não tiver, baixe e instale um Arduino IDE .
