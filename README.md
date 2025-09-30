@@ -2,7 +2,6 @@
 Monitor de Fluxo de Água com Arduino e Dashboard - Teste Salvus
 Este projeto apresenta uma solução completa para monitorar um vazão de água em tempo real utilizando um sensor de fluxo YF-S201, um Arduino Uno e uma interface web moderna como dashboard. O Arduino é responsável por toda a lógica de design, tornando-o uma fonte central de dados, enquanto a interface web atua como um painel de visualização dinâmica.
 
-(Aqui iria uma imagem do dashboard em funcionamento)
 
 ➤ Principais Funcionalidades
 💧 Monitoramento em Tempo Real: Visualiza a vazão instantânea (Litros/minuto) em um cartão e em um gráfico de linha.
