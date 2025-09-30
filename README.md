@@ -43,29 +43,6 @@ Placa de ensaio (Protoboard)	Para facilitar as conexões.
 Jumpers (Fios)	Para conectar os componentes.
 
 
-
-🔌 Montagem do Circuito
-Conecte os componentes conforme o diagrama e a tabela abaixo.
-
-+-----------------------+      +-------------------------+      +---------------------+
-|      SENSOR YF-S201   |      |      ARDUINO UNO        |      |       BOTÃO         |
-|                       |      |                         |      |                     |
-|   Vermelho (VCC) -----+----->| 5V                      |      |   Terminal 1 -------+-----> GND
-|                       |      |                         |      |                     |
-|   Preto (GND) --------+----->| GND                     |      |   Terminal 2 -------+-----> Pino D4
-|                       |      |                         |      |                     |
-|   Amarelo (Sinal) ----+----->| Pino D2 (Interrupt 0)   |      +---------------------+ 
-|                       |      |                         |
-+-----------------------+      +-------------------------+
-
-Fio / Componente	Origem	Destino (Arduino)
-Fio Vermelho (Sensor)	Sensor YF-S201 (VCC)	5V
-Fio Preto (Sensor)	Sensor YF-S201 (GND)	GND
-Fio Amarelo (Sensor)	Sensor YF-S201 (Sinal)	Pino Digital 2
-Terminal 1 (Botão)	Botão	GND
-Terminal 2 (Botão)	Botão	Pino Digital 4
-
-
 🚀 Configuração e Uso
 1. Preparar o Arduino
 Instale um Arduino IDE: Se ainda não tiver, baixe e instale um Arduino IDE .
