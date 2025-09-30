@@ -63,7 +63,7 @@ python -m http.server
 Se você não tiver Python, pode usar a extensão "Live Server" no VS Code.
 3. Visualizar os Dados
 Abra o navegador: Use o Google Chrome ou Microsoft Edge (outros navegadores não podem ter suporte para Web Serial API).
-Acesse o endereço: Digite http://localhost:8000na barra de endereço.
+Acesse o endereço: Digite http://localhost:8000 na barra de endereço.
 Conecte-se ao Arduino:
 Clique no botão "Conectar ao Arduino" .
 Uma janela pop-up aparecerá. Selecione a porta serial correspondente ao seu Arduino e clique em "Conectar".
