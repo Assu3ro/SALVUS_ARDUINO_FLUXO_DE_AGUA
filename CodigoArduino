@@ -1,1 +1,113 @@
+/*
+  Código para Arduino - Leitor de Sensor de Fluxo YF-S201 com Cálculo de Volume e Saída JSON
 
+  Este código lê os pulsos de um sensor de fluxo de água YF-S201, calcula a vazão
+  instantânea (L/min), integra a vazão para obter o volume total acumulado (L),
+  e envia ambos os dados via Serial em formato JSON a cada segundo.
+
+  Um botão físico pode ser usado para zerar o contador de volume acumulado.
+
+  Conexões:
+  - Sensor (YF-S201):
+    - Fio Vermelho (5-24V): 5V do Arduino
+    - Fio Preto (GND): GND do Arduino
+    - Fio Amarelo (Sinal): Pino 2 do Arduino (Interrupt 0)
+  - Botão de Reset:
+    - Um terminal: Pino 4 do Arduino
+    - Outro terminal: GND do Arduino
+*/
+
+// --- PINOS E CONSTANTES ---
+const int flowSensorPin = 2;
+const int resetButtonPin = 4;
+
+// Fator de calibração para o sensor YF-S201 (Hz por L/min).
+const float calibrationFactor = 7.5;
+
+// --- VARIÁVEIS GLOBAIS ---
+// Para o sensor de fluxo
+volatile int pulseCount = 0;
+float flowRate = 0.0; // Vazão instantânea em L/min
+
+// Para o cálculo de volume
+float totalVolume = 0.0; // Volume total acumulado em Litros
+
+// Para o temporizador não-bloqueante
+unsigned long lastReadTime = 0;
+
+// Para o debounce do botão
+unsigned long lastDebounceTime = 0;
+unsigned long debounceDelay = 50; // 50 milissegundos
+
+
+// --- FUNÇÕES DE INTERRUPÇÃO ---
+// Chamada a cada pulso do sensor
+void pulseCounter() {
+  pulseCount++;
+}
+
+// --- SETUP ---
+void setup() {
+  Serial.begin(9600);
+
+  // Configura o pino do sensor
+  pinMode(flowSensorPin, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(flowSensorPin), pulseCounter, FALLING);
+
+  // Configura o pino do botão com resistor de pull-up interno
+  pinMode(resetButtonPin, INPUT_PULLUP);
+
+  Serial.println("Arduino pronto. Enviando dados JSON...");
+}
+
+// --- LOOP PRINCIPAL ---
+void loop() {
+  // 1. VERIFICA O BOTÃO DE RESET (com debounce)
+  handleResetButton();
+
+  // 2. CALCULA VAZÃO E VOLUME (a cada 1 segundo)
+  if (millis() - lastReadTime > 1000) {
+    // Lê e reseta o contador de pulsos de forma segura
+    noInterrupts();
+    int currentPulseCount = pulseCount;
+    pulseCount = 0;
+    interrupts();
+
+    // Calcula a vazão instantânea (L/min)
+    float frequency = currentPulseCount; // Frequência em Hz (pulsos por segundo)
+    flowRate = frequency / calibrationFactor;
+
+    // Calcula o volume e integra (soma) ao total
+    // Vazão (L/min) / 60 = Vazão (L/seg). Como o intervalo é de 1 seg, o volume é a própria vazão em L/s.
+    float volumeIncrement = flowRate / 60.0;
+    totalVolume += volumeIncrement;
+
+    // 3. ENVIA OS DADOS EM FORMATO JSON
+    sendDataAsJson();
+
+    // Atualiza o tempo da última leitura
+    lastReadTime = millis();
+  }
+}
+
+// --- FUNÇÕES AUXILIARES ---
+
+// Verifica se o botão de reset foi pressionado
+void handleResetButton() {
+  int reading = digitalRead(resetButtonPin);
+
+  if (reading == LOW && (millis() - lastDebounceTime) > debounceDelay) {
+    Serial.println("Botão de reset pressionado. Zerando volume.");
+    totalVolume = 0.0;
+    lastDebounceTime = millis();
+  }
+}
+
+// Monta e envia a string JSON pela porta serial
+void sendDataAsJson() {
+  Serial.print("{\"flow\":");
+  Serial.print(flowRate);
+  Serial.print(",\"totalVolume\":");
+  Serial.print(totalVolume);
+  Serial.println("}");
+}
