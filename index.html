@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Fluxo em Tempo Real</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dashboard de Fluxo de Água</h1>
+        <p class="subtitle">Os dados de vazão e volume são calculados e enviados diretamente pelo Arduino.</p>
+        
+        <div class="controls">
+            <button id="connectButton">Conectar ao Arduino</button>
+        </div>
+
+        <div class="summary-card-grid">
+            <div class="summary-card">
+                <h2>Vazão Instantânea</h2>
+                <p><span id="flowRate">0.00</span> L/min</p>
+            </div>
+            <div class="summary-card">
+                <h2>Volume Total Acumulado</h2>
+                <p><span id="totalVolume">0.00</span> Litros</p>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="flowChart"></canvas>
+        </div>
+
+        <div class="history-section">
+            <h2>Histórico de Leituras (Sessão Atual)</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Vazão (L/min)</th>
+                            <th>Volume Total (L)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- Linhas do histórico serão inseridas aqui via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incluindo a biblioteca Chart.js a partir de um CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Incluindo nosso script principal -->
+    <script src="script.js"></script>
+
+</body>
+</html>
